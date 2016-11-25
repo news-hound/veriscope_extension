@@ -1,0 +1,33 @@
+.highlite-lens {
+  background-color: yellow;
+  position: relative;
+  cursor: pointer;
+}
+
+.highlite-lens:hover {
+  background-color: lightgreen;
+}
+
+#annotaion-bubble{
+  position: absolute;
+  font-size: 120%;
+  top: 120%;
+  min-width: 400px;
+  max-width: 600px;
+  padding: 10px 20px;
+  background-color: whitesmoke;
+  border-radius: 10px;
+  box-shadow: 4px 6px 4px #888;
+}
+
+#annotaion-bubble img {
+  margin: 0 auto 10px auto;
+  height: 20px;
+  padding: 0;
+  opacity: 1;
+  cursor: default;
+}
+
+#bubble-content {
+  cursor: text;
+}

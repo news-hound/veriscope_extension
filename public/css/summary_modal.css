@@ -1,0 +1,41 @@
+#lens-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(200, 200, 200, .5);
+  z-index: 1000;
+  display: none;
+}
+
+#lens-modal {
+  background-color: white;
+  border-radius: 15px;
+  padding: 0 15px 15px 15px;
+  box-shadow: 4px 6px 4px #CCC;
+  position: fixed;
+  top: 15%;
+  left: 15%;
+  right: 15%;
+  max-height: 70%;
+  font-size: 18px;
+  overflow: auto;
+  z-index: 1001;
+  display: none;
+}
+
+#lens-modal h2{
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+}
+
+#lens-modal img {
+  height: 20px;
+  margin: 15px auto 0 auto;
+}
+
+#lens-modal ul {
+  margin: 0;
+}
