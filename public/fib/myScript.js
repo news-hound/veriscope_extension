@@ -18,28 +18,8 @@ var feeds = new Set();
  */
 function httpGet(input, type, data) {
 
-	// var server = "https://api.mywot.com/0.4/public_link_json2?hosts=";
-	// var key = "/&key=36fba667a6ef58396fc0d6102fa733983f80d2da";
-	//
-	//
-	// if(type !== "url") { return; }
-	// console.log(input);
-	//
-	//
-	// $.ajax({
-	// 	method: "get",
-	// 	url: server + data + key,
-	// 	data: {url: "this is a thing"},
-	// 	success(data){
-	// 		console.log(data);
-	// 	},
-	// 	error(data){
-	// 		console.log(data);
-	// 	}
-	// })
-
-	var server = "https://fbserve.herokuapp.com";
-	var contents = "?content=";
+	var server = "https://localhost:3001/evaluate";
+	var contents = "?ai=true&url=";
 
 	var page;
 	if(type=="url") page = decode(input);
@@ -58,6 +38,7 @@ function httpGet(input, type, data) {
 		{ return res.text(); })
 		.then(function(text)
 		{
+				console.log(text);
 				var imgUrl = chrome.extension.getURL("/public/img/warning.png");
 				var div = document.createElement('div'),
 				button = Ladda.create(div);
