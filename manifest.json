@@ -7,7 +7,7 @@
 
   "browser_action": {
     "default_icon": "icon.png",
-    "default_popup": "public/views/menu.html"
+    "default_popup": "/public/views/menu.html"
   },
 
   "permissions": [
@@ -18,15 +18,15 @@
   "content_scripts": [
     {
       "matches": ["https://*/*", "http://*/*"],
-      "js": ["public/js/bundle.js"],
-      "css": ["public/css/annotator.css", "public/css/summary_modal.css"]
+      "css": ["/public/css/annotator.css", "/public/css/summary_modal.css"],
+      "js": ["/public/js/menu.js"]
     },
     {
        "matches": ["https://www.facebook.com/*"],
-       "css": ["public/fib/ladda/ladda.min.css"],
-       "js": [ "public/fib/myScript.js", "public/fib/ladda/ladda.min.js"]
+       "js": [ "/public/fib/myScript.js", "/public/fib/ladda/ladda.min.js"],
+       "css": ["/public/fib/ladda/ladda.min.css"]
     }
   ],
 
-  "web_accessible_resources": ["public/img/warning.png"]
+  "web_accessible_resources": ["/public/img/warning.png"]
 }
