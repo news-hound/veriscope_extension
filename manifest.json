@@ -28,5 +28,9 @@
     }
   ],
 
-  "web_accessible_resources": ["/public/img/warning.png"]
+  "web_accessible_resources": [
+    "/public/img/warning.png",
+    "/public/img/checked.png",
+    "/public/img/error.png"
+  ]
 }

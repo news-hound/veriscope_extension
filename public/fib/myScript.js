@@ -22,40 +22,75 @@ function httpGet(input, type, data) {
 	var contents = "?ai=true&url=";
 
 	var page;
-	if(type=="url") page = decode(input);
-	else page = input;
 
-	//page.replace("http:", "http://");
+	if(type=="url") {
+		page = decode(input);
+	} else {
+		page = input;
+	}
 
-    //debugger;
-	console.log(page);
+	page.replace("http:", "http://");
 
-	var theUrl = server + contents + page;
-	theUrl = theUrl.replace("&", "^");
+	if (page.substring(0, 5) === "https" || page.substring(0, 4) === "http") {
+		var theUrl = server + contents + page;
+		//theUrl = theUrl.replace("&", "^");
 
-	fetch(theUrl)
-		.then(function(res)
-		{ return res.text(); })
-		.then(function(text)
-		{
-				console.log(text);
-				var imgUrl = chrome.extension.getURL("/public/img/warning.png");
-				var div = document.createElement('div'),
-				button = Ladda.create(div);
-				data.appendChild(div);
+		console.log("1:" + theUrl)
+		fetch(theUrl)
+			.then(function(response) {
+			  return response.json().then(function(json) {
+					console.log("3:" + json["success"])
 
-				var rating = Math.floor(Math.random() * 100);
 
-				if(text!=="verified") {div.innerHTML = `
-					<span class='rating'>${rating}</span>
-					<img src =${imgUrl} class='lens-warning'/>
-				`;} else { div.innerHTML = `
-						<span class='rating'>${rating}</span>
-					`;
-				}
+					var errorImgUrl = chrome.extension.getURL("/public/img/error.png");
+					var checkedImgUrl = chrome.extension.getURL("/public/img/checked.png");
+					var warningImgUrl = chrome.extension.getURL("/public/img/warning.png");
 
-				if(text!=="verified") div.style = "front-weight:bold; padding: 3px; position:absolute; background:none; top: 4px; right: 30px; font-size: 20px; color: #444;";
+					var div = document.createElement('div'),
+					button = Ladda.create(div);
+					data.appendChild(div);
+
+					var score = null
+
+					if(json["success"] === true) {
+						const ai_results = json["ai"]
+						const score = ai_results["score"]
+						const messages = ai_results["messages"]
+
+						for(i = 0; i < messages.length; i++) {
+							console.log(messages[i])
+				      // var listItem = document.createElement('li');
+				      // listItem.innerHTML = '<strong>' + json.products[i].Name + '</strong> can be found in ' + json.products[i].Location + '. Cost: <strong>£' + json.products[i].Price + '</strong>';
+				      // myList.appendChild(listItem);
+				    }
+
+						if( score >= 90 ) {
+							div.innerHTML = `
+								<span class='rating'>${score}</span>
+								<img src =${checkedImgUrl} class='lens-warning'/>
+								`;
+						} else {
+							div.innerHTML = `
+								<span class='rating'>${score}</span>
+								<img src =${warningImgUrl} class='lens-warning'/>
+								`;
+						}
+
+						div.style = "font-weight:bold; position:absolute; background:none; top: 4px; right: 30px; font-size: 20px; color: #444;";
+
+					} else {
+						score = Math.floor(Math.random() * 100);
+
+						div.innerHTML = `
+								<img src =${errorImgUrl} class='lens-warning'/>
+								<span class='rating'>Invalid link</span>
+							`;
+
+						div.style = "background-color: #C6C8C2; color: #fff; font-size: 27px; position:absolute; top: 0px; left: 0px; width: 100%; height: 100%; opacity: 0.5;";
+					}
+			  });
 		});
+	}
 }
 
 /*
@@ -75,8 +110,6 @@ function decode(code) {
 	res = res.replace(end, "");
 	var end2 = res.substr(res.indexOf("&"), res.length);
 	res = res.replace(end2, "");
-
-	//console.log(res);
 
 	return res;
 }
@@ -108,7 +141,7 @@ setInterval(function() {
 
 			var linked = test[i].querySelector('._6ks');
 			if(!processed && linked != null && linked.querySelector('a')!=undefined) {
-				//console.log(linked.querySelector('a'));
+
 				httpGet(linked.querySelector('a').href, "url", data);
 				processed = false;
 			}
@@ -116,7 +149,7 @@ setInterval(function() {
 
 			var link = test[i].querySelector('._5pbx.userContent');
 			if(!processed && link != null && link.querySelector('a') != null && link.querySelector('a').href!=undefined) {
-				//console.log(link);
+
 				httpGet(link.href, "url", data);
 			}
 
@@ -125,27 +158,25 @@ setInterval(function() {
 
 			if(picComment != null && picComment.querySelector('img') != undefined && picComment.querySelector('img').src!=undefined) {
 
-				//console.log(picComment);
+
 				httpGet(picComment.querySelector('img').src, "image", data);
 				processed = false;
 			}
 
 			var picPost = test[i].querySelector('._46-h._517g');
 			if(!processed && picPost != null  &&  picPost.querySelector('img') != undefined && picPost.querySelector('img').src!=undefined) {
-				//console.log(picPost);
+
 				httpGet(picPost.querySelector('img').src, "image", data);
 				processed = false;
 			}
 
 			var text = test[i].querySelector('._5pbx.userContent');
 			if(!processed && text != null && text.textContent!=undefined) {
-				//console.log(text);
+
 				httpGet(text.textContent, "text", data);
 				processed = false;
 			}
 
-		} else {
-			//console.log("have feed");
 		}
 	}
 
